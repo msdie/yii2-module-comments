@@ -1,0 +1,22 @@
+{
+    "name": "msdie/yii2-module-comments",
+    "description": "Comments module",
+    "keywords": ["yii2","comments","module"],
+    "type" : "yii2-extension",
+    "license" : "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Andrey A.",
+            "email": "andreygeorgv@yandex.ru"
+        }
+    ],
+    "require" : {
+        "php" : ">=5.4.0",
+        "yiisoft/yii2" : "*"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "msdie\\modules\\comments\\" : ""
+        }
+    }
+}
