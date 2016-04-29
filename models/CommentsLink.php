@@ -3,25 +3,25 @@
 namespace msdie\modules\comments\models;
 
 use Yii;
-use yii\helpers\HtmlPurifier;
 
 /**
- * This is the model class for table "{{%comments_fields}}".
+ * This is the model class for table "{{%comments_link}}".
  *
  * @property integer $comments_id
- * @property integer $field_name
- * @property string $value
+ * @property string $url
+ * @property string $link_params
+ * @property integer $user_id
  *
  * @property Comments $comments
  */
-class CommentsFields extends \yii\db\ActiveRecord
+class CommentsLink extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%comments_fields}}';
+        return '{{%comments_link}}';
     }
 
     /**
@@ -30,10 +30,9 @@ class CommentsFields extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['comments_id', 'field_name', 'value'], 'required'],
-            [['comments_id'], 'integer'],
-            [['field_name'], 'string', 'max' => 15],
-            [['value'], 'string', 'max' => 250],
+            [['comments_id', 'url'], 'required'],
+            [['comments_id', 'user_id'], 'integer'],
+            [['url', 'link_params'], 'string', 'max' => 250],
             [['comments_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['comments_id' => 'id']],
         ];
     }
@@ -45,8 +44,9 @@ class CommentsFields extends \yii\db\ActiveRecord
     {
         return [
             'comments_id' => 'Comments ID',
-            'field_name' => 'Field Name',
-            'value' => 'Value',
+            'url' => 'Url',
+            'link_params' => 'Link Params',
+            'user_id' => 'User ID',
         ];
     }
 
@@ -58,13 +58,9 @@ class CommentsFields extends \yii\db\ActiveRecord
         return $this->hasOne(Comments::className(), ['id' => 'comments_id']);
     }
 
-    public function beforeSave($insert)
+    public function getUser()
     {
-        if(parent::beforeSave($insert))
-        {
-            $this->value = HtmlPurifier::process($this->value);
-            return true;
-        }
-        return false;
+        $userClass=\Yii::$app->getModule('comments')->userClass;
+        return $this->hasOne($userClass::className(),['id' => 'user_id']);
     }
 }

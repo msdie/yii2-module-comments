@@ -7,6 +7,8 @@ namespace msdie\modules\comments;
  */
 class Module extends \yii\base\Module
 {
+    public $fields;
+    public $userClass;
     /**
      * @inheritdoc
      */
@@ -19,6 +21,6 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        // custom initialization code goes here
+        \Yii::configure($this, require($this->basePath.'/config/config.php'));
     }
 }
